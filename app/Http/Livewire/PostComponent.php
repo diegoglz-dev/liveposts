@@ -13,12 +13,17 @@ class PostComponent extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $view = 'create';
-    public $post_id, $title, $body;
+    public Post $post;
 
     protected $rules = [
-        'title' => 'required|string|max:191',
-        'body' => 'required|string|max:191',
+        'post.title' => 'required|string|max:191',
+        'post.body' => 'required|string|max:191',
     ];
+
+    public function mount(Post $post)
+    {
+        $this->post = $post;
+    }
 
     public function updated($propertyName)
     {
@@ -27,18 +32,14 @@ class PostComponent extends Component
 
     public function default()
     {
-        $this->title = '';
-        $this->body = '';
         $this->view = 'create';
+        $this->post = new Post;
     }
 
-    public function edit($id)
+    public function edit(Post $post)
     {
-        $post = Post::find($id);
-        $this->post_id = $post->id;
-        $this->title = $post->title;
-        $this->body = $post->body;
         $this->view = 'edit';
+        $this->post = $post;
     }
 
     public function render()
@@ -52,30 +53,22 @@ class PostComponent extends Component
     {
         $this->validate();
 
-        $post = Post::create([
-            'title' => $this->title,
-            'body' => $this->body
-        ]);
+        $this->post->save();
 
-        $this->edit($post->id);
+        $this->edit($this->post->id);
     }
 
     public function update()
     {
         $this->validate();
 
-        $post = Post::find($this->post_id);
-
-        $post->update([
-            'title' => $this->title,
-            'body' => $this->body
-        ]);
+        $this->post->save();
 
         $this->default();
     }
 
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        Post::destroy($id);
+        Post::destroy($post->id);
     }
 }
