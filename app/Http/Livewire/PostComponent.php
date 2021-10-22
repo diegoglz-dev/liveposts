@@ -15,6 +15,16 @@ class PostComponent extends Component
     public $view = 'create';
     public $post_id, $title, $body;
 
+    protected $rules = [
+        'title' => 'required|string|max:191',
+        'body' => 'required|string|max:191',
+    ];
+
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
     public function default()
     {
         $this->title = '';
@@ -40,12 +50,7 @@ class PostComponent extends Component
 
     public function store()
     {
-        $this->validate(
-            [
-                'title' => 'required',
-                'body' => 'required'
-            ]
-        );
+        $this->validate();
 
         $post = Post::create([
             'title' => $this->title,
@@ -57,12 +62,7 @@ class PostComponent extends Component
 
     public function update()
     {
-        $this->validate(
-            [
-                'title' => 'required',
-                'body' => 'required'
-            ]
-        );
+        $this->validate();
 
         $post = Post::find($this->post_id);
 
