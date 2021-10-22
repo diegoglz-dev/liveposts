@@ -36,10 +36,10 @@ class PostComponent extends Component
         $this->post = new Post;
     }
 
-    public function edit(Post $post)
+    public function edit($id)
     {
         $this->view = 'edit';
-        $this->post = $post;
+        $this->post = Post::find($id);
     }
 
     public function render()
