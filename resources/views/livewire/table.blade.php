@@ -19,7 +19,7 @@
                     <button class="btn btn-primary">Editar</button>
                 </td>
                 <td>
-                    <button class="btn btn-danger">Eliminar</button>
+                    <button class="btn btn-danger" wire:click="destroy({{ $post->id }})">Eliminar</button>
                 </td>
             </tr>
         @endforeach

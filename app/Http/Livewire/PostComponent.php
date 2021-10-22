@@ -18,4 +18,9 @@ class PostComponent extends Component
             'posts' => Post::orderBy('id', 'desc')->paginate(8)
         ]);
     }
+
+    public function destroy($id)
+    {
+        Post::destroy($id);
+    }
 }
