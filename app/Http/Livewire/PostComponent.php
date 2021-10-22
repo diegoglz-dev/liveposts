@@ -13,7 +13,7 @@ class PostComponent extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $view = 'create';
-    public $title, $body;
+    public $post_id, $title, $body;
 
     public function default()
     {
@@ -25,6 +25,7 @@ class PostComponent extends Component
     public function edit($id)
     {
         $post = Post::find($id);
+        $this->post_id = $post->id;
         $this->title = $post->title;
         $this->body = $post->body;
         $this->view = 'edit';
@@ -52,6 +53,25 @@ class PostComponent extends Component
         ]);
 
         $this->edit($post->id);
+    }
+
+    public function update()
+    {
+        $this->validate(
+            [
+                'title' => 'required',
+                'body' => 'required'
+            ]
+        );
+
+        $post = Post::find($this->post_id);
+
+        $post->update([
+            'title' => $this->title,
+            'body' => $this->body
+        ]);
+
+        $this->default();
     }
 
     public function destroy($id)
